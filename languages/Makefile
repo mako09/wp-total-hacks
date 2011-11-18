@@ -1,8 +1,9 @@
-# パッケージ名
+# Package name.
 PACKAGE = wp-total-hacks
-# パッケージのタイプ。plugin または theme
+# Package type. 'plugin' or 'theme'
 PROJECT = plugin
-# 本家 (url) より入手してインストールしておいたもの
+# Wordpress-i18n tools are required.  You can checkout from SVN
+#   http://svn.automattic.com/wordpress-i18n/tools/trunk/
 MAKEPOT = $(HOME)/wordpress-i18n/makepot.php
 
 
@@ -36,24 +37,24 @@ po: $(POFILES)
 
 $(POFILES): $(POT)
 	tmpdir=`pwd`; \
-	  echo "$*:"; \
-	  result="`$(MSGMERGE) -o $$tmpdir/$*.new.po $(langdir)/$@ $(POT)`"; \
-	  if $$result; then \
-	    if cmp $(langdir)/$@ $$tmpdir/$*.new.po >/dev/null 2>&1; then \
-	      rm -f $$tmpdir/$*.new.po; \
-	    else \
-	      if mv -f $$tmpdir/$*.new.po $@; then \
-	        :; \
-	      else \
-	        echo "msgmerge for $@ failed: cannot move $$tmpdir/$*.new.po to @" 1>&2; \
-	        rm -f $$tmpdir/$*.new.po; \
-	        exit 1; \
-	      fi; \
-	    fi; \
-	  else \
-	    echo "msgmerge for $@ failed!"; \
+	echo "$*:"; \
+	result="`$(MSGMERGE) -o $$tmpdir/$*.new.po $(langdir)/$@ $(POT)`"; \
+	if $$result; then \
+	  if cmp $(langdir)/$@ $$tmpdir/$*.new.po >/dev/null 2>&1; then \
 	    rm -f $$tmpdir/$*.new.po; \
+	  else \
+	    if mv -f $$tmpdir/$*.new.po $@; then \
+	      :; \
+	    else \
+	      echo "msgmerge for $@ failed: cannot move $$tmpdir/$*.new.po to @" 1>&2; \
+	      rm -f $$tmpdir/$*.new.po; \
+	      exit 1; \
+	    fi; \
 	  fi; \
+	else \
+	  echo "msgmerge for $@ failed!"; \
+	  rm -f $$tmpdir/$*.new.po; \
+	fi; \
 
 pot:
 	$(GENPOT) $(POT)
