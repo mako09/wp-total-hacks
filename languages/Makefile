@@ -6,7 +6,6 @@ PROJECT = plugin
 #   http://svn.automattic.com/wordpress-i18n/tools/trunk/
 MAKEPOT = $(HOME)/wordpress-i18n/makepot.php
 
-
 PHP = /usr/bin/php
 MSGMERGE = /usr/bin/msgmerge
 MSGFMT = /usr/bin/msgfmt
